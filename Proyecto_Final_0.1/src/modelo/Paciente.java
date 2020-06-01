@@ -6,12 +6,12 @@ public class Paciente {
 	private String primApPa;
 	private String SegApPa;
 	private String domicilio;
-	private int numeroCel;
+	private String numeroCel;
 	
 	public Paciente() {}
 
 	public Paciente(String folioPaciente, String nomPaciente, String primApPa, String segApPa, String domicilio,
-			int numeroCel) {
+			String numeroCel) {
 		super();
 		this.folioPaciente = folioPaciente;
 		this.nomPaciente = nomPaciente;
@@ -61,11 +61,11 @@ public class Paciente {
 		this.domicilio = domicilio;
 	}
 
-	public int getNumeroCel() {
+	public String getNumeroCel() {
 		return numeroCel;
 	}
 
-	public void setNumeroCel(int numeroCel) {
+	public void setNumeroCel(String numeroCel) {
 		this.numeroCel = numeroCel;
 	}
 
@@ -74,6 +74,8 @@ public class Paciente {
 		return "Paciente [folioPaciente=" + folioPaciente + ", nomPaciente=" + nomPaciente + ", primApPa=" + primApPa
 				+ ", SegApPa=" + SegApPa + ", domicilio=" + domicilio + ", numeroCel=" + numeroCel + "]";
 	}
+
+	
 	
 	
 
