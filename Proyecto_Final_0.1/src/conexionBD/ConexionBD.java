@@ -22,8 +22,8 @@ public class ConexionBD {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
-			String URL = "jdbc:mysql://localhost:3306/Registros_Pacientes";
-			String url = "jdbc:mysql://localhost:3306/Registros_Pacientes?useTimezone=true&serverTimezone=UTC";
+			String URL = "jdbc:mysql://localhost:3306/registros_pacientes";
+			String url = "jdbc:mysql://localhost:3306/registros_pacientes?useTimezone=true&serverTimezone=UTC";
 			conexion = DriverManager.getConnection(url,"root","losdec211299");
 			
 			System.out.println("Conexion establecida!!!");
