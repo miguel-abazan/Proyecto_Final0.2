@@ -60,7 +60,7 @@ public Paciente buscarAlumno(String folioPa) {
 				res.getString(3),
 				res.getString(4),
 				res.getString(5),
-				res.getInt(6)
+				res.getString(6)
 				);
 				
 		
@@ -72,7 +72,7 @@ public Paciente buscarAlumno(String folioPa) {
 	return null;
 		
 	}
-public ArrayList<Paciente> buscarAlumnos(String filtro){
+public ArrayList<Paciente> buscarPa(String filtro){
 	ArrayList<Paciente>listaPacientes=new ArrayList<>();
 	String sql = "SELECT * FROM Datos_Pacientes";
 	ResultSet rs = new ConexionBD().ejecutarConsultaDeRegistros(sql);
@@ -86,7 +86,7 @@ public ArrayList<Paciente> buscarAlumnos(String filtro){
 	                rs.getString(3),
 	                rs.getString(4),
 	                rs.getString(5),
-	                rs.getInt(6)
+	                rs.getString(6)
 	                ));
 			
 			
