@@ -10,14 +10,14 @@ import java.sql.Statement;
 public class ConexionBD {
 	private String r;
 
-	private Connection conexion;
-	private Statement stm;// PROBLEMA: permite SQL INJECTION
+	static Connection conexion;
+	//private Statement stm;// PROBLEMA: permite SQL INJECTION
 	
 	private PreparedStatement ps;
 	
 	private ResultSet rs;
-	
-	public ConexionBD() {
+	//Singlenton
+	public static Connection getConnection () {
 		//verifica que exista el conector de BD entre java y MySql
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -26,18 +26,19 @@ public class ConexionBD {
 			String url = "jdbc:mysql://localhost:3306/registros_pacientes?useTimezone=true&serverTimezone=UTC";
 			conexion = DriverManager.getConnection(url,"root","losdec211299");
 			
-			System.out.println("Conexion establecida!!!");
-			System.out.println("Ya casi soy ISC =) ");
+			/*System.out.println("Conexion establecida!!!");
+			System.out.println("Ya casi soy ISC =) ");*/
 			
 			
 		} catch (ClassNotFoundException e) {
-			System.out.println("Error del DRIVER");
+			//System.out.println("Error del DRIVER");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			System.out.println("Error en conexion  a MySQL");
+			//System.out.println("Error en conexion  a MySQL");
 			e.printStackTrace();
 		}
-		
+		return conexion;
+				
 	}
 
 	
@@ -45,14 +46,20 @@ public class ConexionBD {
 	public boolean ejecutarInstrucciones(String sql) {
 		
 		try {
-			stm = conexion.createStatement();
-			return stm.execute(sql);
 			
-		} catch (SQLException e) {
-			System.out.println("Error en la instruccion SQL\n" + sql);
-			e.printStackTrace();
+			ps = conexion.prepareStatement(sql);
+			
+			//stm = con.createStatement();
+			
+			int r = ps.executeUpdate(sql);
+				return r == 1 ? true : false ;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 			return false;
-		}
 		
 	}
 	
@@ -60,11 +67,13 @@ public class ConexionBD {
 	public ResultSet ejecutarConsultaDeRegistros(String sql){
 		ResultSet rs= null;
 		try {
-			stm = conexion.createStatement();
-			return stm.executeQuery(sql);
-			
+			ps = conexion.prepareStatement(sql);
+		//stm = con.createStatement();
+		
+		return ps.executeQuery(sql);
+		
 		} catch (SQLException e) {
-			System.out.println("Error en la instruccion SQL\n" + sql);
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return rs;
 		}
@@ -73,7 +82,7 @@ public class ConexionBD {
 	
 	public void cerrarConexion() {
 		try {
-			stm.close();
+			ps.close();
 			conexion.close();
 		} catch (SQLException e) {
 			
@@ -81,6 +90,8 @@ public class ConexionBD {
 		}
 		
 	}
+	
+	
 	
 	public static void main(String[] args) {
 		
