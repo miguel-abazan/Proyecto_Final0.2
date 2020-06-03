@@ -1,12 +1,131 @@
 package controlador;
-
+import conexionBD.ConexionBD;
+import modelo.Paciente;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+/*
 
-import conexionBD.ConexionBD;
-import modelo.Paciente;;
 
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
+
+
+class consulta implements Runnable {
+
+	boolean valido;
+	ResultSet rs;
+	String sql;
+	
+	public consulta(String ntabla) {
+
+		this.sql = ntabla;
+		
+	}
+	
+	@Override
+	public void run() {
+		rs = new ConexionBD().ejecutarConsultaDeRegistros("SELECT * FROM " + sql);
+	}
+
+}
+
+class HiloTabla implements Runnable{
+	
+	JTable table;
+	consulta c;
+	ResultSet rs;
+	
+	public HiloTabla(consulta c) {
+		this.c = c;
+		
+	}
+	
+	@Override
+	public void run() {
+
+		rs = c.rs;
+		
+		CrearTabla tabla = new CrearTabla(rs);
+		table = new JTable(tabla);
+	}
+	
+	public JTable retornarTabla() {
+		
+		
+		return table;
+		
+	}
+	
+}
+
+class CrearTabla extends AbstractTableModel {
+
+	private ResultSet rsRegistros;
+	private java.sql.ResultSetMetaData metaData;
+
+	public CrearTabla(ResultSet unResultSet) {
+
+		this.rsRegistros = unResultSet;
+		try { 
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public int getColumnCount() {
+
+		try {
+			return metaData.getColumnCount();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
+
+	@Override
+	public int getRowCount() {
+
+		try {
+			rsRegistros.last();
+			return rsRegistros.getRow();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
+
+	public Object getValueAt(int arg0, int arg1) {
+
+		try {
+			rsRegistros.absolute(arg0 + 1);
+			return rsRegistros.getObject(arg1 + 1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public String getColumnName(int c) {
+
+		try {
+			return metaData.getColumnName(c + 1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+}*/
 public class PacienteDAO {
 	
 	//metodos que permite realizar las operaciones ABCC
@@ -46,7 +165,7 @@ public class PacienteDAO {
     			return res; 
 	
     }
-public Paciente buscarAlumno(String folioPa) {
+public Paciente buscarPaciente(String folioPa) {
 	//SELECT * FROM Alumno WHERE Num_Control='2';
 	String sql= "SELECT * FROM Datos_Pacientes WHERE Folio_Pa= '"+folioPa+"'";	
 	
@@ -72,6 +191,32 @@ public Paciente buscarAlumno(String folioPa) {
 	return null;
 		
 	}
+/*public JTable retornarTabla(String inst) {
+	consulta c1 = new consulta(inst);
+	HiloTabla ht1 = new HiloTabla(c1);
+	
+	Thread t1 = new Thread(c1);
+	Thread t2 = new Thread(ht1);
+	
+	t1.start();
+	try {
+		t1.join();
+	} catch (InterruptedException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	t2.start();
+	try {
+		t2.join();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	//CrearTabla modelo = new CrearTabla(new ConexionBD().ejecutarConsulta("SELECT * FROM " + inst));
+
+	return ht1.retornarTabla();
+
+}*/
 public ArrayList<Paciente> buscarPa(String filtro){
 	ArrayList<Paciente>listaPacientes=new ArrayList<>();
 	String sql = "SELECT * FROM Datos_Pacientes";
