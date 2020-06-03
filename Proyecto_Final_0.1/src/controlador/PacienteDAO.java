@@ -23,7 +23,7 @@ public class PacienteDAO {
 		
 		
 		boolean resultado =  new ConexionBD().ejecutarInstrucciones(sql);
-		System.out.println(resultado);
+		//System.out.println(resultado);
 		
 		return resultado; 
 	}
@@ -44,10 +44,11 @@ public class PacienteDAO {
     					     +", Domicilio_Pa='"+a.getDomicilio()
     					     +"' WHERE Folio_Pa = '"+a.getFolioPaciente()+"'";
     			boolean res = new ConexionBD().ejecutarInstrucciones(sql);
-    			System.out.println("Paciente DAO: " + res);
+    			//System.out.println("Paciente DAO: " + res);
     			return res; 
 	
     }
+    
 public Paciente buscarPaciente(String folioPa) {
 	//SELECT * FROM Alumno WHERE Num_Control='2';
 	String sql= "SELECT * FROM Datos_Pacientes WHERE Folio_Pa= '"+folioPa+"'";	

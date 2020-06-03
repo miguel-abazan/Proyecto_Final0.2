@@ -22,7 +22,7 @@ public class DoctoresDAO {
 		return resultado; 
 	}
 	
-    public boolean eliminarPaciente(String numFolio) {
+    public boolean eliminarDoctor(String numFolio) {
     	//DELETE FROM Alumnos WHERE Num_Control = '3';
     			String sql = "DELETE FROM Datos_Doctores WHERE cd_prof = '"+numFolio+"'";
     			return new ConexionBD().ejecutarInstrucciones(sql);
