@@ -598,25 +598,33 @@ JDesktopPane desktopPane = new JDesktopPane();
 		mostrarDatosConTableModel();
 		
 		
-		btnMod1 = new JButton("BUSCAR");
+		btnMod1 = new JButton("BUSCAR FOLIO");
 		btnMod1.setIcon(new ImageIcon("Iconos/modificar.png"));
-		btnMod1.setBounds(460, 100, 140, 35);
+		btnMod1.setBounds(20, 75, 200, 35);
 		
 		IF_Consultas.add(btnMod1);
 		btnMod1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					
-					JOptionPane.showMessageDialog(getParent(), "SE GUARDARON LOS CAMBIOS");
-					} catch (Exception e2) {
-					JOptionPane.showMessageDialog(getParent(), "LLENE LOS DATOS", "AVISO", JOptionPane.ERROR_MESSAGE);	
+				
+					String folio = cajafo1.getText();
+					Paciente r =PacienteDAO.buscar_re(folio);
+					if(r==null) {
+						JOptionPane.showMessageDialog(getParent(), "NO SE ENCONTRARON COINCIDENCIAS");
+						
+					}else {
+						cajanom1.setText(r.getNomPaciente());
+						cajapPa1.setText(r.getPrimApPa());
+						cajaMa1.setText(r.getSegApPa());
+						cajadomi1.setText(r.getDomicilio());
+						cajanumcel1.setText(r.getNumeroCel());
 					}
+						
 			}
 		}); //ACTION LISTENER AGREGAR
-					btnborr1 = new JButton();
+					btnborr1 = new JButton("Restablecer");
 					btnborr1.setIcon(new ImageIcon("Iconos/borrar.png"));
 
-					btnborr1.setBounds(460, 170, 100, 35);
+					btnborr1.setBounds(460, 170, 150, 35);
 					IF_Consultas.add(btnborr1);
 		btnborr1.addActionListener(new ActionListener() {
 			@Override
@@ -691,9 +699,9 @@ JDesktopPane desktopPane = new JDesktopPane();
 			
 		return matrizInfo;
 	}
-}
 
-/*public static void main(String[] args) {
+
+public static void main(String[] args) {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -707,5 +715,5 @@ JDesktopPane desktopPane = new JDesktopPane();
 		
 	}
 
-}*/
+}
 
