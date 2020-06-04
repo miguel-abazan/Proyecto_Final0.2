@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,29 +35,35 @@ class Login extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Login");
 		// setResizable(false);
-		setSize(700, 500);
+		setSize(240,380);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		getContentPane().setBackground(Color.white);
 
-		JLabel lb1 = new JLabel("Usuario");
-		lb1.setBounds(170, 30, 100, 20);
+		
+		JLabel lbim = new JLabel("Usuario");
+		lbim.setIcon(new ImageIcon("Iconos/Usuario.png"));
+		lbim.setBounds(50, 20, 128, 128);
+		add(lbim);
+		
+		JLabel lb1 = new JLabel("Nombre Usuario");
+		lb1.setBounds(50, 150, 100, 20);
 		add(lb1);
 
 		JTextField t1 = new JTextField();
-		t1.setBounds(170, 60, 150, 25);
+		t1.setBounds(20, 170, 150, 25);
 		add(t1);
 
 		JLabel lb2 = new JLabel("Contraseña");
-		lb2.setBounds(170, 95, 100, 20);
+		lb2.setBounds(50, 200, 100, 20);
 		add(lb2);
 
 		JTextField t2 = new JTextField();
-		t2.setBounds(170, 115, 150, 25);
+		t2.setBounds(20, 220, 150, 25);
 		add(t2);
 
 		JButton b1 = new JButton("Ingresar");
-		b1.setBounds(190, 155, 100, 25);
+		b1.setBounds(20, 280, 100, 25);
 		add(b1);
 		b1.addActionListener(new ActionListener() {
 			
