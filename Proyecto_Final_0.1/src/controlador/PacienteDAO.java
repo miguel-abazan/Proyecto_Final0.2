@@ -1,6 +1,8 @@
 package controlador;
 import conexionBD.ConexionBD;
 import modelo.Paciente;
+
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 
 public class PacienteDAO {
 	
@@ -49,6 +52,7 @@ public class PacienteDAO {
 	
     }
     
+  
 public Paciente buscarPaciente(String folioPa) {
 	//SELECT * FROM Alumno WHERE Num_Control='2';
 	String sql= "SELECT * FROM Datos_Pacientes WHERE Folio_Pa= '"+folioPa+"'";	
@@ -105,6 +109,36 @@ public ArrayList<Paciente> buscarPa(String filtro){
 	
 	return listaPacientes;
 	
+}
+public ArrayList<Paciente> buscarUsuariosConMatriz() {
+
+	ConexionBD conex = new ConexionBD();
+	ArrayList<Paciente> miLista = new ArrayList<Paciente>();
+	Paciente persona;
+	try {
+		Statement estatuto = conex.getConnection().createStatement();
+		ResultSet rs = estatuto.executeQuery("SELECT * FROM Datos_Pacientes ");
+
+		while (rs.next()) {
+			persona = new Paciente();
+			persona.setFolioPaciente(rs.getString("Folio_Pa"));
+			persona.setNomPaciente(rs.getString("Nom_Paciente"));
+			persona.setPrimApPa(rs.getString("Prim_Ap_Paciente"));
+			persona.setSegApPa(rs.getString("Seg_Ap_Paciente"));
+			persona.setDomicilio(rs.getString("Domicilio_Pa"));
+			persona.setNumeroCel(rs.getString("Num_Cel"));
+			miLista.add(persona);
+		}
+		rs.close();
+		estatuto.close();
+		
+	} catch (SQLException e) {
+		System.out.println(e.getMessage());
+		JOptionPane.showMessageDialog(null, "Error al consultar", "Error",
+				JOptionPane.ERROR_MESSAGE);
+
+	}
+	return miLista;
 }
 
 public void buscarUsuariosConTableModel(DefaultTableModel model) {
