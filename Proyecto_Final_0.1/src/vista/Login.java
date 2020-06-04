@@ -17,18 +17,23 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import Hilo.HiloLogin;
 import conexionBD.ConexionBD;
 
 
 
 
-class Login extends JFrame {
+public class Login extends JFrame {
 	Connection con;
 	PreparedStatement pst;
 	ResultSet rs;
+	public static JProgressBar barra;
 
 	public Login() {
 		getContentPane().setLayout(null);
@@ -38,7 +43,7 @@ class Login extends JFrame {
 		setSize(240,380);
 		setLocationRelativeTo(null);
 		setVisible(true);
-		getContentPane().setBackground(Color.white);
+		getContentPane().setBackground(Color.GRAY);
 
 		
 		JLabel lbim = new JLabel("Usuario");
@@ -63,7 +68,7 @@ class Login extends JFrame {
 		add(t2);
 
 		JButton b1 = new JButton("Ingresar");
-		b1.setBounds(20, 280, 100, 25);
+		b1.setBounds(50, 250, 100, 25);
 		add(b1);
 		b1.addActionListener(new ActionListener() {
 			
@@ -82,10 +87,13 @@ class Login extends JFrame {
 					 pst.setString(2, pasw);
 					 rs = pst.executeQuery();
 					 if (rs.next()) {
+						 HiloLogin br= new HiloLogin();
+						 br.start();
 						 VistaMenu gui = new VistaMenu();
 						 gui.setVisible(true);
 						 setVisible(false);
 						 
+						
 						
 					}else
 						JOptionPane.showMessageDialog(getParent(), 
@@ -102,6 +110,23 @@ class Login extends JFrame {
 			
 			}
 		});
+		barra = new JProgressBar(0,100);
+		barra.setBounds(50, 280, 100, 20);
+		barra.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				cargar();
+			}
+		});
+		add(barra);
+	
+	}
+	public void cargar() {
+		if(barra.getValue()==100) {
+			
+		}
 	}
 
 
