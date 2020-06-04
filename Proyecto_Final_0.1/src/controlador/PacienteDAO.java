@@ -3,6 +3,7 @@ import conexionBD.ConexionBD;
 import modelo.Paciente;
 
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,7 +14,8 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class PacienteDAO {
-	
+	static PreparedStatement pst;
+	static ResultSet rs;
 	//metodos que permite realizar las operaciones ABCC
 	
 	public boolean agregarPaciente(Paciente a) {
@@ -51,7 +53,47 @@ public class PacienteDAO {
     			return res; 
 	
     }
+    public static Paciente buscar_re(String folio) {
+		Paciente r= null;
+		String sql= "SELECT * FROM Datos_Pacientes WHERE Folio_Pa= '"+folio+"'";
+		try {
+			
+			 rs= pst.executeQuery(sql);
+			//JOptionPane.showMessageDialog(null, "Error al consultar", "Error",
+					//JOptionPane.ERROR_MESSAGE);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		r=asignar();
+		return r;
+	}
     
+    public static Paciente asignar() {
+    	Paciente r= null;
+    	String folio;
+    	String nombre;
+    	String pAp;
+    	String sAp;
+    	String dom;
+    	String numcel;
+    	try {
+			if(rs.first()) {
+				folio=rs.getString("Folio_Pa");
+				nombre= rs.getString("Nom_Paciente");
+				pAp= rs.getString("Prim_Ap_Paciente");
+				sAp= rs.getString("Seg_Ap_Paciente");
+				dom= rs.getString("Domicilio_Pa");
+				numcel= rs.getString("Num_Cel");
+				
+				r= new Paciente(folio,nombre,pAp,sAp,dom,numcel);
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	return r;
+    }
   
 public Paciente buscarPaciente(String folioPa) {
 	//SELECT * FROM Alumno WHERE Num_Control='2';
@@ -80,36 +122,7 @@ public Paciente buscarPaciente(String folioPa) {
 		
 	}
 
-public ArrayList<Paciente> buscarPa(String filtro){
-	ArrayList<Paciente>listaPacientes=new ArrayList<>();
-	String sql = "SELECT * FROM Datos_Pacientes";
-	ResultSet rs = new ConexionBD().ejecutarConsultaDeRegistros(sql);
-	
-	try {
-		rs.first();
-		
-		do {
-			listaPacientes.add(new Paciente(rs.getString("Folio_Pa"),
-	                rs.getString(2),
-	                rs.getString(3),
-	                rs.getString(4),
-	                rs.getString(5),
-	                rs.getString(6)
-	                ));
-			
-			
-		}while(rs.next());
-		
-		
-		
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	
-	return listaPacientes;
-	
-}
+
 public ArrayList<Paciente> buscarUsuariosConMatriz() {
 
 	ConexionBD conex = new ConexionBD();
