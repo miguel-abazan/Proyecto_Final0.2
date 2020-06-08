@@ -8,6 +8,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,8 +50,9 @@ public class VistaMenu extends JFrame{
 	JMenu menuPacientes, menuDoctores, MenuCitasMedicas;
 	JMenuItem menuAltas, menuBajas, menuCambios, menuConsultas,menuAltasDoc, menuBajasDoc;
 	JInternalFrame IF_Altas, IF_Bajas, IF_Consultas,IF_Cambios, IF_Bajas_Doc;
-	JTable mitabla1, miTabla2;
+	JTable miTabla1, miTabla2, miTabla3, miTabla4;
 	JScrollPane miBarra1, miBarra2,miBarra3,miBarra4;
+	
 	
 	public VistaMenu() {
 		
@@ -218,7 +222,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 				miBarra1 = new JScrollPane();
 				miBarra1.setBounds(90, 350, 460, 130);
 				IF_Altas.add(miBarra1);
-				construirTabla();
+				construirTabla1();
 				//mostrarDatosConTableModel();// mostramos la tabla
 				
 				btn_agregar = new JButton("AGREGAR");
@@ -243,10 +247,13 @@ JDesktopPane desktopPane = new JDesktopPane();
 							} catch (Exception e) {
 							JOptionPane.showMessageDialog(getParent(), "LLENE LOS DATOS", "AVISO", JOptionPane.ERROR_MESSAGE);
 							}
-							
+							construirTabla1();
+							construirTabla2();
+							construirTabla3();
+							construirTabla4();
 						}
 						//mostrarDatosConTableModel();
-						construirTabla();
+						
 					}
 				}); //ACTION LISTENER AGREGAR
 				btn_borrar = new JButton("Restablecer");
@@ -352,12 +359,12 @@ JDesktopPane desktopPane = new JDesktopPane();
 				cajaNumC = new JTextField();
 				cajaNumC.setBounds(250, 275, 170, 20);
 				IF_Bajas.add(cajaNumC);
+				
 				miBarra2 = new JScrollPane();
 				miBarra2.setBounds(90, 350, 460, 130);
 				IF_Bajas.add(miBarra2);
-				mostrarDatosConTableModel();
 				
-				//mostrarDatosConTableModel();// mostramos la tabla
+				construirTabla2();
 							
 				btn_Eliminar = new JButton("ELIMINAR");
 				btn_Eliminar.setIcon(new ImageIcon("Iconos/eliminar1.png"));
@@ -373,6 +380,10 @@ JDesktopPane desktopPane = new JDesktopPane();
 							JOptionPane.showMessageDialog(getParent(), "NO PUEDE DEJAR ESPACIOS VACIOS", "AVISO", JOptionPane.INFORMATION_MESSAGE);
 						}
 						// mostramos la tabla
+						construirTabla1();
+						construirTabla2();
+						construirTabla3();
+						construirTabla4();
 					}
 				}); //ACTION LISTENER AGREGAR
 				btnborrar = new JButton();
@@ -472,11 +483,11 @@ JDesktopPane desktopPane = new JDesktopPane();
 			cajanumcel = new JTextField();
 			cajanumcel.setBounds(250, 275, 170, 20);
 			IF_Cambios.add(cajanumcel);
-			miBarra1 = new JScrollPane();
-			miBarra1.setBounds(90, 350, 460, 130);
-			IF_Cambios.add(miBarra1);
+			miBarra3 = new JScrollPane();
+			miBarra3.setBounds(90, 350, 460, 130);
+			IF_Cambios.add(miBarra3);
 			
-			construirTabla();
+			construirTabla3();
 			
 			
 			btnMod = new JButton("Modificar");
@@ -491,7 +502,10 @@ JDesktopPane desktopPane = new JDesktopPane();
 						} catch (Exception e2) {
 						JOptionPane.showMessageDialog(getParent(), "LLENE LOS DATOS", "AVISO", JOptionPane.ERROR_MESSAGE);	
 						}
-					mostrarDatosConTableModel();
+					construirTabla1();
+					construirTabla2();
+					construirTabla3();
+					construirTabla4();
 				}
 			}); //ACTION LISTENER AGREGAR
 						btnborr = new JButton();
@@ -533,9 +547,11 @@ JDesktopPane desktopPane = new JDesktopPane();
 		IF_Consultas.setResizable(true);
 		IF_Consultas.setLayout(null);
 		
-		JLabel lblf1, lblt1, lblfolio1, lblNom1, lblapPaterno1, lblapMaterno1, lblDomi1, lblNumCel11; 
-		JTextField cajafo1, cajanom1, cajapPa1, cajaMa1, cajadomi1, cajanumcel1;
-		JButton btnMod1, btnborr1,btncan1,btnbus1;
+		JLabel lblf1, lblt1; 
+		JTextField cajafo1;
+		JButton btnborr1,btncan1;
+		
+		
 		
 		lblt1 = new JLabel("CONSULTA PACIENTES");
 		lblt1.setFont(new Font("Helvetica", Font.PLAIN, 30));
@@ -549,97 +565,60 @@ JDesktopPane desktopPane = new JDesktopPane();
 		lblf1.setOpaque(true);
 		IF_Consultas.add(lblf1);
 		
-		lblfolio1 = new JLabel("FOLIO DEL PACIENTE:");
-		lblfolio1.setBounds(100, 95, 150, 10);
-		IF_Consultas.add(lblfolio1);
+		
+		
+		
+		
 		cajafo1 = new JTextField();
-		cajafo1.setBounds(250, 90, 170, 20);
+		cajafo1.setBounds(160, 80, 170, 28);
+		cajafo1.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				buscarFolio(cajafo1.getText());
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		IF_Consultas.add(cajafo1);
 		
-		lblNom1 = new JLabel("NOMBRES:");
-		lblNom1.setBounds(100, 120, 150, 10);
-		IF_Consultas.add(lblNom1);
-		cajanom1 = new JTextField();
-		cajanom1.setBounds(170, 115, 250, 20);
-		IF_Consultas.add(cajanom1);
+		miBarra4 = new JScrollPane();
+		miBarra4.setBounds(90, 140, 453, 250);
+		IF_Consultas.add(miBarra4);
+		construirTabla4();
 		
-		lblapPaterno1 = new JLabel("APELLIDO PATERNO:");
-		lblapPaterno1.setBounds(100, 155, 150, 10);
-		IF_Consultas.add(lblapPaterno1);
-		cajapPa1 = new JTextField();
-		cajapPa1.setBounds(250, 150, 170, 20);
-		IF_Consultas.add(cajapPa1);
-		
-		lblapMaterno1 = new JLabel("APELLIDO MATERNO:");
-		lblapMaterno1.setBounds(100, 195, 150, 10);
-		IF_Consultas.add(lblapMaterno1);
-		cajaMa1 = new JTextField();
-		cajaMa1.setBounds(250, 190, 170, 20);
-		IF_Consultas.add(cajaMa1);
-			
-		lblDomi1 = new JLabel("DOMICILIO:");
-		lblDomi1.setBounds(100, 250, 150, 10);
-		IF_Consultas.add(lblDomi1);
-		cajadomi1 = new JTextField();
-		cajadomi1.setBounds(250, 245, 170, 20);
-		IF_Consultas.add(cajadomi1);
-		  
+		JLabel lblDomi11 = new JLabel("BUSCAR FOLIO:");
+		lblDomi11.setIcon(new ImageIcon("Iconos/buscar.png"));
+		lblDomi11.setBounds(25, 80, 150, 32);
+		IF_Consultas.add(lblDomi11);
 		
 		
-		lblNumCel11 = new JLabel("NUMERO TELEFONICO:");
-		lblNumCel11.setBounds(100, 280, 150, 10);
-		IF_Consultas.add(lblNumCel11);
-		cajanumcel1 = new JTextField();
-		cajanumcel1.setBounds(250, 275, 170, 20);
-		IF_Consultas.add(cajanumcel1);
-		miBarra2 = new JScrollPane();
-		miBarra2.setBounds(90, 350, 460, 130);
-		IF_Consultas.add(miBarra2);
-		mostrarDatosConTableModel();
-		
-		
-		btnMod1 = new JButton("BUSCAR FOLIO");
-		btnMod1.setIcon(new ImageIcon("Iconos/modificar.png"));
-		btnMod1.setBounds(20, 75, 200, 35);
-		
-		IF_Consultas.add(btnMod1);
-		btnMod1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-					String folio = cajafo1.getText();
-					Paciente r =PacienteDAO.buscar_re(folio);
-					if(r==null) {
-						JOptionPane.showMessageDialog(getParent(), "NO SE ENCONTRARON COINCIDENCIAS");
-						
-					}else {
-						cajanom1.setText(r.getNomPaciente());
-						cajapPa1.setText(r.getPrimApPa());
-						cajaMa1.setText(r.getSegApPa());
-						cajadomi1.setText(r.getDomicilio());
-						cajanumcel1.setText(r.getNumeroCel());
-					}
-						
-			}
-		}); //ACTION LISTENER AGREGAR
-					btnborr1 = new JButton("Restablecer");
-					btnborr1.setIcon(new ImageIcon("Iconos/borrar.png"));
+		btnborr1 = new JButton("RESTAURAR");
+		btnborr1.setIcon(new ImageIcon("Iconos/restore.png"));
 
-					btnborr1.setBounds(460, 170, 150, 35);
-					IF_Consultas.add(btnborr1);
+		btnborr1.setBounds(20, 460, 150, 32);
+		IF_Consultas.add(btnborr1);
 		btnborr1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cajafo1.setText("");
-			cajanom1.setText("");
-			cajapPa1.setText("");
-			cajaMa1.setText("");
-			cajadomi1.setText("");
-			cajanumcel1.setText("");
+			
 			}
 		});//ACTION LISTENER BORRAR
 		btncan1 = new JButton("CANCELAR");
-		btncan1.setIcon(new ImageIcon("Iconos/cancelar.png"));
-		btncan1.setBounds(460, 240, 140, 35);
+		btncan1.setIcon(new ImageIcon("Iconos/x.png"));
+		btncan1.setBounds(460, 460, 140, 32);
 		IF_Consultas.add(btncan1);
 	desktopPane.add(IF_Consultas); // agregar InternalFrame al DesktopPane
 	add(desktopPane, BorderLayout.CENTER); //agreagr desktopPane al JFrame principal
@@ -649,38 +628,39 @@ JDesktopPane desktopPane = new JDesktopPane();
 
 }
 	
-	private void mostrarDatosConTableModel() {
-		DefaultTableModel model;
-		model = new DefaultTableModel();
-		miTabla2 = new JTable();
-		miTabla2.setModel(model);
-		model.addColumn("Folio Paciente");
-		model.addColumn("Nombre");
-		model.addColumn("Apellido Paterno");
-		model.addColumn("Apellido Materno");
-		model.addColumn("Domicilio");
-		model.addColumn("Num. Celular");
-
-		miTabla2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		miTabla2.getTableHeader().setReorderingAllowed(false);
-
-		PacienteDAO miPersonaDao2 = new PacienteDAO();
-		
-		miPersonaDao2.buscarUsuariosConTableModel(model);
-		miBarra2.setViewportView(miTabla2);
-		
-
-
-	}
-	private void construirTabla() {
+	
+	private void construirTabla1() {
 		String titulos[]={ "Folio", "Nombre", "Primer Ap", "Segundo Ap","Domicilio","Numero Cel" };
 		String informacion[][]=obtenerMatriz();
 		
-		mitabla1=new JTable(informacion,titulos);
-		miBarra1.setViewportView(mitabla1);
+		miTabla1=new JTable(informacion,titulos);
+		miBarra1.setViewportView(miTabla1);
 		
 	}
-
+	private void construirTabla2() {
+		String titulos[]={ "Folio", "Nombre", "Primer Ap", "Segundo Ap","Domicilio","Numero Cel" };
+		String informacion[][]=obtenerMatriz();
+		
+		miTabla2=new JTable(informacion,titulos);
+		miBarra2.setViewportView(miTabla2);
+		
+	}
+	private void construirTabla3() {
+		String titulos[]={ "Folio", "Nombre", "Primer Ap", "Segundo Ap","Domicilio","Numero Cel" };
+		String informacion[][]=obtenerMatriz();
+		
+		miTabla3=new JTable(informacion,titulos);
+		miBarra3.setViewportView(miTabla3);
+		
+	}
+	private void construirTabla4() {
+		String titulos[]={ "Folio", "Nombre", "Primer Ap", "Segundo Ap","Domicilio","Numero Cel" };
+		String informacion[][]=obtenerMatriz();
+		
+		miTabla4=new JTable(informacion,titulos);
+		miBarra4.setViewportView(miTabla4);
+		
+	}
 	private String[][] obtenerMatriz() {
 		
 		PacienteDAO miPersonaDao=new PacienteDAO();
@@ -699,9 +679,48 @@ JDesktopPane desktopPane = new JDesktopPane();
 			
 		return matrizInfo;
 	}
+	public void buscarFolio(String filtro) {
+		DefaultTableModel tabla;
+		String t_Columna[]= {"Folio", "Nombre", 
+				             "Primer Ap", "Segundo Ap",
+				             "Domicilio","Numero Cel"};
+		String filas[]= new String [6];
+		Connection con;
+		PreparedStatement pst;
+		ResultSet rs;
+		tabla = new DefaultTableModel(null,t_Columna);
+		
+		
+		try {
+			
+			con= ConexionBD.getConnection();
+			String consulta = "SELECT * FROM Datos_Pacientes WHERE Nom_Paciente LIKE"+ '"'+ filtro + "%" +'"';
+			pst= con.prepareStatement(consulta);
+			rs=pst.executeQuery();
+			
+			while(rs.next()) {
+				
+				filas[0]= rs.getString(1);
+				filas[1]= rs.getString(2);
+				filas[2]= rs.getString(3);
+				filas[3]= rs.getString(4);
+				filas[4]= rs.getString(5);
+				filas[5]= rs.getString(6);
+				tabla.addRow(filas);
+				
+			}
+			
+			miTabla4.setModel(tabla);
+				
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}	
+	
+	
+	
 
-}
-/*public static void main(String[] args) {
+public static void main(String[] args) {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -715,5 +734,5 @@ JDesktopPane desktopPane = new JDesktopPane();
 		
 	}
 
-}*/
+}
 
