@@ -52,6 +52,9 @@ public class VistaMenu extends JFrame{
 	JInternalFrame IF_Altas, IF_Bajas, IF_Consultas,IF_Cambios, IF_Bajas_Doc;
 	JTable miTabla1, miTabla2, miTabla3, miTabla4;
 	JScrollPane miBarra1, miBarra2,miBarra3,miBarra4;
+	JTextField caja_folio_Paciente;
+	JLabel info,info1,info2;
+	JTextField cajanumFo, cajanombre, cajaapPaterno, cajaapMaterno,cajaDom,cajaNumC,cajafo, cajanom, cajapPa, cajaMa, cajadomi, cajanumcel;
 	
 	
 	public VistaMenu() {
@@ -145,7 +148,7 @@ public class VistaMenu extends JFrame{
 			
 			setJMenuBar(menuBar);
 			
-			
+			//=======================================================INICIO AÑADIR======================================================//
 JDesktopPane desktopPane = new JDesktopPane();
 			
 			IF_Altas = new JInternalFrame();
@@ -161,7 +164,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 				IF_Altas.setLayout(null);
 				
 				JLabel label_fondo, label_txt, label_numCntrl, label_nombres, label_apPaterno, label_apMaterno, label_Domicilio, label_Num_Tel; 
-				JTextField caja_folio_Paciente, caja_nombres, caja_apPaterno, caja_apMaterno, caja_domicilio, caja_num_cel;
+				JTextField caja_nombres, caja_apPaterno, caja_apMaterno, caja_domicilio, caja_num_cel;
 				JButton btn_agregar, btn_borrar,btn_cancelar;
 				
 				label_txt = new JLabel("ALTAS PACIENTES");
@@ -170,6 +173,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 				label_txt.setIcon(new ImageIcon("descarga.png"));
 				label_txt.setBounds(60, 0, 684, 60);
 				IF_Altas.add(label_txt);
+				
 				label_fondo = new JLabel(); 
 				label_fondo.setBounds(0, 0, 684, 60); 
 				label_fondo.setBackground(Color.GREEN);
@@ -179,13 +183,39 @@ JDesktopPane desktopPane = new JDesktopPane();
 				label_numCntrl = new JLabel("FOLIO DEL PACIENTE:");
 				label_numCntrl.setBounds(100, 95, 150, 10);
 				IF_Altas.add(label_numCntrl);
+				
 				caja_folio_Paciente = new JTextField();
 				caja_folio_Paciente.setBounds(250, 90, 170, 20);
+				caja_folio_Paciente.addKeyListener(new KeyListener() {
+					
+					@Override
+					public void keyTyped(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e) {
+						validacion();
+						
+					}
+					
+					@Override
+					public void keyPressed(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 				IF_Altas.add(caja_folio_Paciente);
+				
+				info = new JLabel();
+				info.setBounds(460, 100, 170, 20);
+				IF_Altas.add(info);
 				
 				label_nombres = new JLabel("NOMBRES:");
 				label_nombres.setBounds(100, 120, 150, 10);
 				IF_Altas.add(label_nombres);
+				
 				caja_nombres = new JTextField();
 				caja_nombres.setBounds(170, 115, 250, 20);
 				IF_Altas.add(caja_nombres);
@@ -193,6 +223,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 				label_apPaterno = new JLabel("APELLIDO PATERNO:");
 				label_apPaterno.setBounds(100, 155, 150, 10);
 				IF_Altas.add(label_apPaterno);
+				
 				caja_apPaterno = new JTextField();
 				caja_apPaterno.setBounds(250, 150, 170, 20);
 				IF_Altas.add(caja_apPaterno);
@@ -200,6 +231,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 				label_apMaterno = new JLabel("APELLIDO MATERNO:");
 				label_apMaterno.setBounds(100, 195, 150, 10);
 				IF_Altas.add(label_apMaterno);
+				
 				caja_apMaterno = new JTextField();
 				caja_apMaterno.setBounds(250, 190, 170, 20);
 				IF_Altas.add(caja_apMaterno);
@@ -207,28 +239,53 @@ JDesktopPane desktopPane = new JDesktopPane();
 				label_Domicilio = new JLabel("DOMICILIO:");
 				label_Domicilio.setBounds(100, 250, 150, 10);
 				IF_Altas.add(label_Domicilio);
+				
 				caja_domicilio = new JTextField();
 				caja_domicilio.setBounds(250, 245, 170, 20);
 				IF_Altas.add(caja_domicilio);
 				
-				
 				label_Num_Tel = new JLabel("NUMERO TELEFONICO:");
 				label_Num_Tel.setBounds(100, 280, 150, 10);
 				IF_Altas.add(label_Num_Tel);
+				
 				caja_num_cel = new JTextField();
 				caja_num_cel.setBounds(250, 275, 170, 20);
+				caja_num_cel.addKeyListener(new KeyListener() {
+					
+					@Override
+					public void keyTyped(KeyEvent e) {
+						char caracter = e.getKeyChar(); 
+						if(caracter < '0' || caracter > '9') {
+							e.consume();
+							JOptionPane.showMessageDialog(getParent(), "SOLO SE ADMITEN NUMEROS", "ERROR", JOptionPane.ERROR_MESSAGE);
+						}
+						
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void keyPressed(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 				IF_Altas.add(caja_num_cel);
 				
 				miBarra1 = new JScrollPane();
 				miBarra1.setBounds(90, 350, 460, 130);
 				IF_Altas.add(miBarra1);
 				construirTabla1();
-				//mostrarDatosConTableModel();// mostramos la tabla
-				
+		
 				btn_agregar = new JButton("AGREGAR");
 				btn_agregar.setIcon(new ImageIcon("Iconos/agregar.png"));
-				btn_agregar.setBounds(460, 100, 140, 35);
+				btn_agregar.setBounds(460, 150, 140, 35);
 				IF_Altas.add(btn_agregar);
+				
 				btn_agregar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if(caja_apMaterno.getText().equals("") 
@@ -252,15 +309,14 @@ JDesktopPane desktopPane = new JDesktopPane();
 							construirTabla3();
 							construirTabla4();
 						}
-						//mostrarDatosConTableModel();
-						
 					}
 				}); //ACTION LISTENER AGREGAR
-				btn_borrar = new JButton("Restablecer");
+				
+				btn_borrar = new JButton("BORRAR");
 				btn_borrar.setIcon(new ImageIcon("Iconos/borrar.png"));
-
-				btn_borrar.setBounds(460, 170, 180, 35);
+				btn_borrar.setBounds(460, 190, 140, 35);
 				IF_Altas.add(btn_borrar);
+				
 				btn_borrar.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -274,26 +330,24 @@ JDesktopPane desktopPane = new JDesktopPane();
 				});//ACTION LISTENER BORRAR
 				btn_cancelar = new JButton("CANCELAR");
 				btn_cancelar.setIcon(new ImageIcon("Iconos/cancelar.png"));
-				btn_cancelar.setBounds(460, 240, 140, 35);
+				btn_cancelar.setBounds(460, 230, 140, 35);
 				IF_Altas.add(btn_cancelar);
-				
-				
-				
+					
 			desktopPane.add(IF_Altas); // agregar InternalFrame al DesktopPane
 			add(desktopPane, BorderLayout.CENTER); //agreagr desktopPane al JFrame principal
+			//=================================================FIN AÑADIR====================================================================//
 			
 			
 			
 			
 			
 			
-			
-
+            //========================================INICIO BAJAS=========================================================================//
 			
 			IF_Bajas = new JInternalFrame();
 			IF_Bajas.getContentPane().setLayout(null);
 			IF_Bajas.setDefaultCloseOperation(HIDE_ON_CLOSE);
-			IF_Bajas.setTitle("BAJAS");
+			IF_Bajas.setTitle("BAJAS PACIENTES");
 			IF_Bajas.setSize(690, 550);
 			IF_Bajas.setMaximizable(true);
 			IF_Bajas.setIconifiable(true);
@@ -302,74 +356,105 @@ JDesktopPane desktopPane = new JDesktopPane();
 			IF_Bajas.setLayout(null);
 				
 			JLabel lblF, lbltxtF,lblFolio, lbl_nom, lblpAp, lblApMaterno, lblDom, lblNumC;
-			JTextField cajanumFo, cajanombre, cajaapPaterno, cajaapMaterno,cajaDom,cajaNumC;
-			JButton btn_Eliminar, btnborrar,btncancelar,btnBuscar;
+			//JTextField cajanumFo, cajanombre, cajaapPaterno, cajaapMaterno,cajaDom,cajaNumC;
+			JButton btn_Eliminar, btnborrar,btncancelar;
 				
 			lbltxtF = new JLabel("BAJAS PACIENTES");
 			lbltxtF.setFont(new Font("Helvetica", Font.PLAIN, 30));
 			lbltxtF.setForeground(Color.white);
 			lbltxtF.setIcon(new ImageIcon("descarga.png"));
 			lbltxtF.setBounds(60, 0, 684, 60);
-				IF_Bajas.add(lbltxtF);
+			IF_Bajas.add(lbltxtF);
+				
 				lblF = new JLabel(); 
 				lblF.setBounds(0, 0, 684, 60); 
 				lblF.setBackground(Color.RED);
 				lblF.setOpaque(true);
 				IF_Bajas.add(lblF);
 				
-				lblFolio = new JLabel("FOLIO DEL PACIENTE:");
-				lblFolio.setBounds(100, 95, 150, 10);
+				lblFolio = new JLabel("FOLIO DEL PACIENTE A DAR DE BAJA:");
+				lblFolio.setBounds(10, 95, 250, 32);
+				lblFolio.setIcon(new ImageIcon("Iconos/buscar.png"));
 				IF_Bajas.add(lblFolio);
+				
 				cajanumFo = new JTextField();
-				cajanumFo.setBounds(250, 90, 170, 20);
+				cajanumFo.setBounds(260, 100, 170, 20);
+				cajanumFo.addKeyListener(new KeyListener() {
+					
+					@Override
+					public void keyTyped(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e) {
+						buscarEliminar(cajanumFo.getText());
+						
+					}
+					
+					@Override
+					public void keyPressed(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 				IF_Bajas.add(cajanumFo);
 				
+				info1 = new JLabel();
+				info1.setBounds(480, 100, 200, 20);
+				IF_Bajas.add(info1);
+				
 				lbl_nom = new JLabel("NOMBRES:");
-				lbl_nom.setBounds(100, 120, 150, 10);
+				lbl_nom.setBounds(100, 180, 150, 10);
 				IF_Bajas.add(lbl_nom);
+				
 				cajanombre = new JTextField();
-				cajanombre.setBounds(170, 115, 250, 20);
+				cajanombre.setBounds(170, 180, 250, 20);
 				IF_Bajas.add(cajanombre);
 				
 				lblpAp = new JLabel("APELLIDO PATERNO:");
-				lblpAp.setBounds(100, 155, 150, 10);
+				lblpAp.setBounds(100, 210, 150, 10);
 				IF_Bajas.add(lblpAp);
+				
 				cajaapPaterno = new JTextField();
-				cajaapPaterno.setBounds(250, 150, 170, 20);
+				cajaapPaterno.setBounds(250, 210, 170, 20);
 				IF_Bajas.add(cajaapPaterno);
 				
 				lblApMaterno = new JLabel("APELLIDO MATERNO:");
-				lblApMaterno.setBounds(100, 195, 150, 10);
+				lblApMaterno.setBounds(100, 240, 150, 10);
 				IF_Bajas.add(lblApMaterno);
+				
 				cajaapMaterno = new JTextField();
-				cajaapMaterno.setBounds(250, 190, 170, 20);
+				cajaapMaterno.setBounds(250, 240, 170, 20);
 				IF_Bajas.add(cajaapMaterno);
 					
 				lblDom = new JLabel("DOMICILIO:");
-				lblDom.setBounds(100, 250, 150, 10);
+				lblDom.setBounds(100, 270, 150, 10);
 				IF_Bajas.add(lblDom);
+				
 				cajaDom = new JTextField();
-				cajaDom.setBounds(250, 245, 170, 20);
+				cajaDom.setBounds(250, 270, 170, 20);
 				IF_Bajas.add(cajaDom);
-				
-				
+						
 				lblNumC = new JLabel("NUMERO TELEFONICO:");
-				lblNumC.setBounds(100, 280, 150, 10);
+				lblNumC.setBounds(100, 300, 150, 10);
 				IF_Bajas.add(lblNumC);
+				
 				cajaNumC = new JTextField();
-				cajaNumC.setBounds(250, 275, 170, 20);
+				cajaNumC.setBounds(250, 300, 170, 20);
 				IF_Bajas.add(cajaNumC);
 				
 				miBarra2 = new JScrollPane();
 				miBarra2.setBounds(90, 350, 460, 130);
 				IF_Bajas.add(miBarra2);
-				
 				construirTabla2();
 							
 				btn_Eliminar = new JButton("ELIMINAR");
 				btn_Eliminar.setIcon(new ImageIcon("Iconos/eliminar1.png"));
-				btn_Eliminar.setBounds(460, 100, 140, 35);
+				btn_Eliminar.setBounds(460, 150, 140, 35);
 				IF_Bajas.add(btn_Eliminar);
+				
 				btn_Eliminar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						try {
@@ -386,10 +471,10 @@ JDesktopPane desktopPane = new JDesktopPane();
 						construirTabla4();
 					}
 				}); //ACTION LISTENER AGREGAR
-				btnborrar = new JButton();
+				btnborrar = new JButton("Restablecer");
 				btnborrar.setIcon(new ImageIcon("Iconos/borrar.png"));
 
-				btnborrar.setBounds(460, 170, 40, 35);
+				btnborrar.setBounds(460, 190, 140, 35);
 				IF_Bajas.add(btnborrar);
 				btnborrar.addActionListener(new ActionListener() {
 					@Override
@@ -405,14 +490,16 @@ JDesktopPane desktopPane = new JDesktopPane();
 				});//ACTION LISTENER BORRAR
 				btncancelar = new JButton("CANCELAR");
 				btncancelar.setIcon(new ImageIcon("Iconos/cancelar.png"));
-				btncancelar.setBounds(460, 240, 140, 35);
+				btncancelar.setBounds(460, 230, 140, 35);
 				IF_Bajas.add(btncancelar);
 			desktopPane.add(IF_Bajas); // agregar InternalFrame al DesktopPane
 			add(desktopPane, BorderLayout.CENTER); //agreagr desktopPane al JFrame principal
 			
+			//==============================================FIN BAJAS=========================================================================//
 			
 			
 			
+			//==============================================INICIO CAMBIOS=====================================================================//
 			IF_Cambios = new JInternalFrame();
 			IF_Cambios.getContentPane().setLayout(null);
 			IF_Cambios.setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -425,7 +512,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 			IF_Cambios.setLayout(null);
 			
 			JLabel lblf, lblt, lblfolio, lblNom, lblapPaterno, lblapMaterno, lblDomi, lblNumCel1; 
-			JTextField cajafo, cajanom, cajapPa, cajaMa, cajadomi, cajanumcel;
+			//JTextField cajafo, cajanom, cajapPa, cajaMa, cajadomi, cajanumcel;
 			JButton btnMod, btnborr,btncan,btnbus;
 			
 			lblt = new JLabel("MODIFICAR PACIENTES");
@@ -440,62 +527,112 @@ JDesktopPane desktopPane = new JDesktopPane();
 			lblf.setOpaque(true);
 			IF_Cambios.add(lblf);
 			
-			lblfolio = new JLabel("FOLIO DEL PACIENTE:");
-			lblfolio.setBounds(100, 95, 150, 10);
+			lblfolio = new JLabel("FOLIO DEL PACIENTE A DAR MODIFICAR:");
+			lblfolio.setBounds(5, 95, 280, 32);
+			lblfolio.setIcon(new ImageIcon("Iconos/buscar.png"));
 			IF_Cambios.add(lblfolio);
 			cajafo = new JTextField();
-			cajafo.setBounds(250, 90, 170, 20);
+			cajafo.setBounds(270, 100, 170, 20);
+			cajafo.addKeyListener(new KeyListener() {
+				
+				@Override
+				public void keyTyped(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void keyReleased(KeyEvent e) {
+					buscarModificar(cajafo.getText());
+					
+				}
+				
+				@Override
+				public void keyPressed(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			IF_Cambios.add(cajafo);
+			info2 = new JLabel();
+			info2.setBounds(480, 100, 200, 20);
+			IF_Cambios.add(info2);
 			
 			lblNom = new JLabel("NOMBRES:");
-			lblNom.setBounds(100, 120, 150, 10);
+			lblNom.setBounds(100, 180, 150, 10);
 			IF_Cambios.add(lblNom);
 			cajanom = new JTextField();
-			cajanom.setBounds(170, 115, 250, 20);
+			cajanom.setBounds(170, 180, 250, 20);
 			IF_Cambios.add(cajanom);
 			
 			lblapPaterno = new JLabel("APELLIDO PATERNO:");
-			lblapPaterno.setBounds(100, 155, 150, 10);
+			lblapPaterno.setBounds(100, 210, 150, 10);
 			IF_Cambios.add(lblapPaterno);
 			cajapPa = new JTextField();
-			cajapPa.setBounds(250, 150, 170, 20);
+			cajapPa.setBounds(250, 210, 170, 20);
 			IF_Cambios.add(cajapPa);
 			
 			lblapMaterno = new JLabel("APELLIDO MATERNO:");
-			lblapMaterno.setBounds(100, 195, 150, 10);
+			lblapMaterno.setBounds(100, 240, 150, 10);
 			IF_Cambios.add(lblapMaterno);
 			cajaMa = new JTextField();
-			cajaMa.setBounds(250, 190, 170, 20);
+			cajaMa.setBounds(250, 240, 170, 20);
 			IF_Cambios.add(cajaMa);
 				
 			lblDomi = new JLabel("DOMICILIO:");
-			lblDomi.setBounds(100, 250, 150, 10);
+			lblDomi.setBounds(100, 270, 150, 10);
 			IF_Cambios.add(lblDomi);
+			
 			cajadomi = new JTextField();
-			cajadomi.setBounds(250, 245, 170, 20);
+			cajadomi.setBounds(250, 270, 170, 20);
 			IF_Cambios.add(cajadomi);
-			  
-			
-			
+			 
 			lblNumCel1 = new JLabel("NUMERO TELEFONICO:");
-			lblNumCel1.setBounds(100, 280, 150, 10);
+			lblNumCel1.setBounds(100, 300, 150, 10);
 			IF_Cambios.add(lblNumCel1);
+			
 			cajanumcel = new JTextField();
-			cajanumcel.setBounds(250, 275, 170, 20);
+			cajanumcel.setBounds(250, 300, 170, 20);
+			cajanumcel.addKeyListener(new KeyListener() {
+
+				@Override
+				public void keyTyped(KeyEvent e) {
+					char caracter = e.getKeyChar(); 
+					if(caracter < '0' || caracter > '9') {
+						e.consume();
+						JOptionPane.showMessageDialog(getParent(), "SOLO SE ADMITEN NUMEROS", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+
+				@Override
+				public void keyPressed(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void keyReleased(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
 			IF_Cambios.add(cajanumcel);
+			
 			miBarra3 = new JScrollPane();
 			miBarra3.setBounds(90, 350, 460, 130);
 			IF_Cambios.add(miBarra3);
-			
 			construirTabla3();
-			
 			
 			btnMod = new JButton("Modificar");
 			btnMod.setIcon(new ImageIcon("Iconos/modificar.png"));
-			btnMod.setBounds(460, 100, 140, 35);
+			btnMod.setBounds(460, 150, 140, 35);
 			IF_Cambios.add(btnMod);
+			
 			btnMod.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					
 					try {
 						boolean res = new PacienteDAO().modificarPaciente(new Paciente(cajafo.getText(), cajanom.getText(), cajapPa.getText(), cajaMa.getText(),cajadomi.getText(),cajanumcel.getText()));
 						JOptionPane.showMessageDialog(getParent(), "SE GUARDARON LOS CAMBIOS");
@@ -507,12 +644,14 @@ JDesktopPane desktopPane = new JDesktopPane();
 					construirTabla3();
 					construirTabla4();
 				}
+				
 			}); //ACTION LISTENER AGREGAR
-						btnborr = new JButton();
+						btnborr = new JButton("BORRAR");
 						btnborr.setIcon(new ImageIcon("Iconos/borrar.png"));
 
-						btnborr.setBounds(460, 170, 100, 35);
+						btnborr.setBounds(460, 190, 140, 35);
 			IF_Cambios.add(btnborr);
+			
 			btnborr.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -526,14 +665,15 @@ JDesktopPane desktopPane = new JDesktopPane();
 			});//ACTION LISTENER BORRAR
 			btncan = new JButton("CANCELAR");
 			btncan.setIcon(new ImageIcon("Iconos/cancelar.png"));
-			btncan.setBounds(460, 240, 140, 35);
+			btncan.setBounds(460, 230, 140, 35);
 			IF_Cambios.add(btncan);
+			
 		desktopPane.add(IF_Cambios); // agregar InternalFrame al DesktopPane
 		add(desktopPane, BorderLayout.CENTER); //agreagr desktopPane al JFrame principal
+		//===================================================FIN CAMBIOS==========================================================================//
 		
 		
-		
-		
+		//===================================================INICIO CONSULTAS======================================================================//
 		
 		
 		IF_Consultas = new JInternalFrame();
@@ -552,25 +692,21 @@ JDesktopPane desktopPane = new JDesktopPane();
 		JButton btnborr1,btncan1;
 		
 		
-		
 		lblt1 = new JLabel("CONSULTA PACIENTES");
 		lblt1.setFont(new Font("Helvetica", Font.PLAIN, 30));
 		lblt1.setForeground(Color.white);
 		lblt1.setIcon(new ImageIcon("Iconos/descarga.png"));
 		lblt1.setBounds(60, 0, 684, 60);
 		IF_Consultas.add(lblt1);
+		
 		lblf1 = new JLabel(); 
 		lblf1.setBounds(0, 0, 684, 60); 
 		lblf1.setBackground(Color.YELLOW);
 		lblf1.setOpaque(true);
 		IF_Consultas.add(lblf1);
 		
-		
-		
-		
-		
 		cajafo1 = new JTextField();
-		cajafo1.setBounds(160, 80, 170, 28);
+		cajafo1.setBounds(180, 80, 170, 28);
 		cajafo1.addKeyListener(new KeyListener() {
 			
 			@Override
@@ -598,7 +734,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 		IF_Consultas.add(miBarra4);
 		construirTabla4();
 		
-		JLabel lblDomi11 = new JLabel("BUSCAR FOLIO:");
+		JLabel lblDomi11 = new JLabel("BUSCAR NOMBRE :");
 		lblDomi11.setIcon(new ImageIcon("Iconos/buscar.png"));
 		lblDomi11.setBounds(25, 80, 150, 32);
 		IF_Consultas.add(lblDomi11);
@@ -619,12 +755,20 @@ JDesktopPane desktopPane = new JDesktopPane();
 		btncan1 = new JButton("CANCELAR");
 		btncan1.setIcon(new ImageIcon("Iconos/x.png"));
 		btncan1.setBounds(460, 460, 140, 32);
+		btncan1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				IF_Consultas.isClosed();
+			}
+		});
 		IF_Consultas.add(btncan1);
 	desktopPane.add(IF_Consultas); // agregar InternalFrame al DesktopPane
 	add(desktopPane, BorderLayout.CENTER); //agreagr desktopPane al JFrame principal
 	
 			
-			
+		//=============================================================FIN CONSULTAS==========================================================================//	
 
 }
 	
@@ -716,11 +860,88 @@ JDesktopPane desktopPane = new JDesktopPane();
 			// TODO: handle exception
 		}
 	}	
-	
-	
-	
-
-public static void main(String[] args) {
+	public void validacion() {
+		
+		String mensaje = PacienteDAO.buscarFolio(caja_folio_Paciente.getText());
+		
+		if(mensaje.equals("Existe Folio")) {
+			
+			info.setText("Folio YA Registrado");
+			
+		}else {
+			
+			info.setText("Folio NO Registrado");
+		}
+	}
+    public void buscarEliminar(String folio) {
+    	Connection con;
+    	
+    	try {
+    		con = ConexionBD.getConnection();
+    		String consElim = "SELECT * FROM Datos_Pacientes WHERE Folio_Pa = ?";
+    		PreparedStatement pst= con.prepareStatement(consElim);
+    		pst.setString(1, folio);
+    		ResultSet rs= pst.executeQuery();
+    		if(rs.next()) {
+    			info1.setText("SE ENCONTRÓ FOLIO");
+    			cajanombre.setText(rs.getString("Nom_Paciente")); 
+    			cajaapPaterno.setText(rs.getString("ApP_Paciente")); 
+    			cajaapMaterno.setText(rs.getString("ApM_Paciente")); 
+    			cajaDom.setText(rs.getString("Domicilio_Pa")); 
+    			cajaNumC.setText(rs.getString("Num_Cel")); 
+    			
+    			
+    		}else {
+    			info1.setText("NO SE ENCONTRÓ FOLIO");
+    			cajanombre.setText(""); 
+    			cajaapPaterno.setText(""); 
+    			cajaapMaterno.setText(""); 
+    			cajaDom.setText("");
+    			cajaNumC.setText("");
+    		}
+    		
+    	} catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	
+    	
+    }
+    public void buscarModificar(String folio) {
+    	Connection con;
+    	
+    	try {
+    		con = ConexionBD.getConnection();
+    		String consElim = "SELECT * FROM Datos_Pacientes WHERE Folio_Pa = ?";
+    		PreparedStatement pst= con.prepareStatement(consElim);
+    		pst.setString(1, folio);
+    		ResultSet rs= pst.executeQuery();
+    		if(rs.next()) {
+    			 
+    			info2.setText("SE ENCONTRÓ FOLIO");
+    			cajanom.setText(rs.getString("Nom_Paciente")); 
+    			cajapPa.setText(rs.getString("ApP_Paciente")); 
+    			cajaMa.setText(rs.getString("ApM_Paciente")); 
+    			cajadomi.setText(rs.getString("Domicilio_Pa")); 
+    			cajanumcel.setText(rs.getString("Num_Cel")); 
+    			
+    			
+    		}else {
+    			info2.setText("NO SE ENCONTRÓ FOLIO");
+    			cajanom.setText(""); 
+    			cajapPa.setText(""); 
+    			cajaMa.setText(""); 
+    			cajadomi.setText("");
+    			cajanumcel.setText("");
+    		}
+    		
+    	} catch (Exception e) {
+    		// TODO: handle exception
+    	}
+    	
+    	
+    }
+}
+/*public static void main(String[] args) {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -734,5 +955,5 @@ public static void main(String[] args) {
 		
 	}
 
-}
+}*/
 
