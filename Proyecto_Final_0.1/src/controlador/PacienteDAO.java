@@ -2,7 +2,7 @@ package controlador;
 import conexionBD.ConexionBD;
 import modelo.Paciente;
 
-
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -114,6 +114,26 @@ public ArrayList<Paciente> buscarUsuariosConMatriz() {
 	return miLista;
 }
 
-
+public static String buscarFolio(String folio) {
+	Connection con;
+	String msj = null;
+	try {
+		con = ConexionBD.getConnection();
+		String cons = "SELECT Folio_Pa FROM Datos_Pacientes WHERE Folio_Pa = ?";
+		PreparedStatement pst= con.prepareStatement(cons);
+		pst.setString(1, folio);
+		ResultSet rs= pst.executeQuery();
+		if(rs.next()) {
+			msj = "Existe Folio";
+			
+		}else {
+			msj= "No Existe Folio";
+		}
+		
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+	return msj;
+}
 
 }
