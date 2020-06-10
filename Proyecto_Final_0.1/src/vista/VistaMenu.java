@@ -288,15 +288,33 @@ JDesktopPane desktopPane = new JDesktopPane();
 				
 				btn_agregar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if(caja_apMaterno.getText().equals("") 
-								|| caja_apPaterno.getText().equals("") 
-								|| caja_nombres.getText().equals("") 
-								|| caja_folio_Paciente.getText().equals("") 
-								|| caja_domicilio.getText().equals("") 
-								|| caja_num_cel.getText().equals("")){
-							JOptionPane.showMessageDialog(getParent(), "LLENE LOS DATOS", "AVISO", JOptionPane.ERROR_MESSAGE);
+						if(caja_folio_Paciente.getText().equals("")) {
+							JOptionPane.showMessageDialog(getParent(), " LLENAR DATOS", "AVISO", JOptionPane.INFORMATION_MESSAGE);
 						}else {
-							try {
+							if(info.getText().equals("Folio YA Registrado")) {
+								JOptionPane.showMessageDialog(getParent(), "NO SE PUEDE AGREGAR UN REGISTRO CON FOLIO EXISTENTE", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+							}else {
+							int opcion = JOptionPane.showConfirmDialog(null, "¿DESEA AGREGAR EL REGISTRO?", "AVISO", JOptionPane.WARNING_MESSAGE);
+							if(opcion == JOptionPane.YES_OPTION) {
+								try {
+									boolean resultado = new PacienteDAO().agregarPaciente(new Paciente(caja_folio_Paciente.getText(),caja_nombres.getText(),
+											caja_apPaterno.getText(),caja_apMaterno.getText(),caja_domicilio.getText(),caja_num_cel.getText()));
+									JOptionPane.showMessageDialog(getParent(), "SE REGISTRO CORRECTAMENTE");
+									
+								} catch (Exception e) {
+								}
+								construirTabla1();
+								construirTabla2();
+								construirTabla3();
+								construirTabla4();
+							  }	
+							if(opcion == JOptionPane.CLOSED_OPTION) {
+							}
+						}	
+							}
+						}
+						
+							/*try {
 								boolean resultado = new PacienteDAO().agregarPaciente(new Paciente(caja_folio_Paciente.getText(),caja_nombres.getText(),
 										caja_apPaterno.getText(),caja_apMaterno.getText(),caja_domicilio.getText(),caja_num_cel.getText()));
 								JOptionPane.showMessageDialog(getParent(), "SE REGISTRO CORRECTAMENTE");
@@ -308,8 +326,8 @@ JDesktopPane desktopPane = new JDesktopPane();
 							construirTabla2();
 							construirTabla3();
 							construirTabla4();
-						}
-					}
+						}*/
+					
 				}); //ACTION LISTENER AGREGAR
 				
 				btn_borrar = new JButton("BORRAR");
@@ -457,7 +475,30 @@ JDesktopPane desktopPane = new JDesktopPane();
 				
 				btn_Eliminar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						try {
+						if(cajanumFo.getText().equals("")) {
+							JOptionPane.showMessageDialog(getParent(), " SE ELIMINA REGISTRO POR FOLIO", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+						}else {
+							if(info1.getText().equals("NO SE ENCONTRÓ FOLIO")) {
+								JOptionPane.showMessageDialog(getParent(), "NO SE PUEDE ELIMINAR UN REGISTRO QUE NO EXISTE", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+							}else {
+							int opcion = JOptionPane.showConfirmDialog(null, "¿DESEA ELIMINAR EL REGISTRO?", "AVISO", JOptionPane.WARNING_MESSAGE);
+							if(opcion == JOptionPane.YES_OPTION) {
+								try {
+									boolean res = new PacienteDAO().eliminarPaciente(cajanumFo.getText());
+									JOptionPane.showMessageDialog(getParent(), "SE ELIMINÓ CORRACTAMENTE", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+								} catch (Exception e2) {
+								}
+								construirTabla1();
+								construirTabla2();
+								construirTabla3();
+								construirTabla4();
+							  }	
+							if(opcion == JOptionPane.CLOSED_OPTION) {
+							}
+						}	
+							}
+						}
+						/*try {
 							boolean res = new PacienteDAO().eliminarPaciente(cajanumFo.getText());
 							JOptionPane.showMessageDialog(getParent(), "SE ELIMINO CORRECTAMENTE");
 							
@@ -469,7 +510,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 						construirTabla2();
 						construirTabla3();
 						construirTabla4();
-					}
+					}*/
 				}); //ACTION LISTENER AGREGAR
 				btnborrar = new JButton("Restablecer");
 				btnborrar.setIcon(new ImageIcon("Iconos/borrar.png"));
@@ -632,8 +673,32 @@ JDesktopPane desktopPane = new JDesktopPane();
 			
 			btnMod.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					if(cajafo.getText().equals("")) {
+						JOptionPane.showMessageDialog(getParent(), " LLENAR DATOS", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+					}else {
+						if(info2.getText().equals("NO SE ENCONTRÓ FOLIO")) {
+							JOptionPane.showMessageDialog(getParent(), "NO SE PUEDE MODIFICAR UN REGISTRO CON FOLIO EXISTENTE", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+						}else {
+						int opcion = JOptionPane.showConfirmDialog(null, "¿DESEA MODIFICAR EL REGISTRO?", "AVISO", JOptionPane.WARNING_MESSAGE);
+						if(opcion == JOptionPane.YES_OPTION) {
+							try {
+								boolean res = new PacienteDAO().modificarPaciente(new Paciente(cajafo.getText(), cajanom.getText(), cajapPa.getText(), cajaMa.getText(),cajadomi.getText(),cajanumcel.getText()));
+								JOptionPane.showMessageDialog(getParent(), "SE GUARDARON LOS CAMBIOS");
+								} catch (Exception e2) {
+								//JOptionPane.showMessageDialog(getParent(), "LLENE LOS DATOS", "AVISO", JOptionPane.ERROR_MESSAGE);	
+								}
+							construirTabla1();
+							construirTabla2();
+							construirTabla3();
+							construirTabla4();
+						}						
+						if(opcion == JOptionPane.CLOSED_OPTION) {
+						}
+					}	
+						}
+					}
 					
-					try {
+					/*try {
 						boolean res = new PacienteDAO().modificarPaciente(new Paciente(cajafo.getText(), cajanom.getText(), cajapPa.getText(), cajaMa.getText(),cajadomi.getText(),cajanumcel.getText()));
 						JOptionPane.showMessageDialog(getParent(), "SE GUARDARON LOS CAMBIOS");
 						} catch (Exception e2) {
@@ -643,7 +708,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 					construirTabla2();
 					construirTabla3();
 					construirTabla4();
-				}
+				}*/
 				
 			}); //ACTION LISTENER AGREGAR
 						btnborr = new JButton("BORRAR");
@@ -772,7 +837,7 @@ JDesktopPane desktopPane = new JDesktopPane();
 
 }
 	
-	
+	//metodos tablas 
 	private void construirTabla1() {
 		String titulos[]={ "Folio", "Nombre", "Primer Ap", "Segundo Ap","Domicilio","Numero Cel" };
 		String informacion[][]=obtenerMatriz();
@@ -941,6 +1006,7 @@ JDesktopPane desktopPane = new JDesktopPane();
     	
     }
 }
+
 /*public static void main(String[] args) {
 		
 		SwingUtilities.invokeLater(new Runnable() {
